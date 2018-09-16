@@ -21,8 +21,32 @@ class Baralho:
         self.cartas = []
 
     def addCartas(self):
-        for i in range(52):
+        for i in range(5):
             self.cartas.append(Carta())
 
-    def getBaralho(self):
-        return self.cartas
+    def getCarta(self):
+        return random.choice(self.cartas)
+
+class Jogo:
+    def __init__(self):
+        self.jogador1 = Baralho()
+        self.jogador2 = Baralho()
+        self.jogador1.addCartas()
+        self.jogador2.addCartas()
+        self.rodada = 0
+
+    def partida(self):
+        carta_j1 = self.jogador1.getCarta()
+        carta_j2 = self.jogador2.getCarta()
+        
+        print(f'Rodada [{self.rodada}]')
+        print(f'Jogador 1: {carta_j1}')
+        print(f'Jogador 2: {carta_j2}')
+    
+    def start(self):
+        while(self.rodada < 10):
+            self.partida()
+            self.rodada = self.rodada + 1
+        
+jogo1 = Jogo()
+jogo1.start()
