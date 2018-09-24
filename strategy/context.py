@@ -30,15 +30,6 @@ class Baralho:
     def embaralhar(self):
         shuffle(self.cartas)
     
-    def carta_fim(self):
-        return self.cartas.pop()
-    
-    def carta_aleatoria(self):
-        return random.choice(self.cartas)
-
-    def carta_inicio(self):
-        return self.cartas[0]
-    
     def get_baralho(self):
         return self.cartas
 
