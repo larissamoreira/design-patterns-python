@@ -6,14 +6,22 @@ naipes = {'ouro': 1, 'copas': 2, 'espada': 3, 'paus': 4}
 
 class Carta:
     def __init__(self, naipe, numero):
-        self.numero = numero
-        self.naipe = naipe
+        self.__numero = numero
+        self.__naipe = naipe
 
     def ponto_naipe(self, naipe):
         return naipes[naipe]
 
     def ponto_numero(self, numero):
         return numeros[numero]
+    
+    @property
+    def numero(self):
+        return self.__numero
+
+    @property
+    def naipe(self):
+        return self.__naipe
 
     def get_carta(self):
         return f'{self.numero} {self.naipe}'
@@ -35,14 +43,50 @@ class Baralho:
 
 class Jogo:
     def __init__(self, strategy):
-        self.baralho = Baralho()
-        self.baralho.add_cartas()
-        self.baralho.embaralhar()
-        self.jogador1 = 0
-        self.jogador2 = 0
-        self.rodada = 0
-        self.strategy = strategy
+        self.__baralho = Baralho()
+        self.__baralho.add_cartas()
+        self.__baralho.embaralhar()
+        self.__jogador1 = 0
+        self.__jogador2 = 0
+        self.__rodada = 0
+        self.__strategy = strategy
 
+    @property
+    def baralho(self):
+        return self.__baralho
+    
+    @property
+    def jogador1(self):
+        return self.__jogador1
+
+    @property
+    def jogador2(self):
+        return self.__jogador2
+    
+    @property
+    def strategy(self):
+        return self.__strategy
+    
+    @property
+    def rodada(self):
+        return self.__rodada
+
+    @rodada.setter
+    def rodada(self, new_rodada):
+        self.__rodada = new_rodada
+      
+    @jogador1.setter
+    def jogador1(self, new_jogador1):
+        self.__jogador1 = new_jogador1
+
+    @jogador2.setter
+    def jogador2(self, new_jogador2):
+        self.__jogador2 = new_jogador2
+
+    @strategy.setter
+    def strategy(self, new_strategy):
+        self.__strategy = new_strategy
+        
     def add_pontos_jogador1(self, numero, naipe):
         self.jogador1 += numero + naipe
         return self.jogador1
@@ -52,6 +96,8 @@ class Jogo:
         return self.jogador2
 
     def partida(self):
+        self.rodada = self.rodada + 1
+
         c1 = self.strategy.pegar_carta_1(self.baralho.get_baralho())
         c2 = self.strategy.pegar_carta_2(self.baralho.get_baralho())
 
