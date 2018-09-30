@@ -1,34 +1,43 @@
-from quarto import Quarto
+import cadastros
 from hotel import Hotel
-from tipo_quarto import Tipo
+from reserva import Reserva
+from datetime import datetime
+from boleto import Boleto
+from cartao_credito import CartaoCredito
 
-#Hoteis
-hotel1 = Hotel('Hotel Maravilha', 'João Pessoa', 'Epitácio Pessoa, 221', '20', '9.6')
-hotel1.add_quarto(Quarto(Tipo.SINGLE, 98.00))
-hotel1.add_quarto(Quarto(Tipo.DUPLO, 70.50))
-hotel1.add_quarto(Quarto(Tipo.TRIPLO, 40.50))
-hotel1.add_quarto(Quarto(Tipo.PRESIDENCIAL, 160.70))
-
-hotel2 = Hotel('Hotel Caravelas', 'João Pessoa', 'Ranieri Mazilli, 221', '40', '7.9')
-hotel2.add_quarto(Quarto(Tipo.SINGLE, 18.00))
-hotel2.add_quarto(Quarto(Tipo.DUPLO, 20.50))
-hotel2.add_quarto(Quarto(Tipo.TRIPLO, 30.50))
-hotel2.add_quarto(Quarto(Tipo.PRESIDENCIAL, 100.70))
-
-hotel3 = Hotel('Hotel PAD', 'Campina Grande', 'Avenida Haddad, 43', '10', '10')
-hotel3.add_quarto(Quarto(Tipo.SINGLE, 50.00))
-hotel3.add_quarto(Quarto(Tipo.SINGLE, 54.00))
-hotel3.add_quarto(Quarto(Tipo.DUPLO, 70.50))
-hotel3.add_quarto(Quarto(Tipo.TRIPLO, 80.50))
-hotel3.add_quarto(Quarto(Tipo.PRESIDENCIAL, 200.00))
-
-
-def busca(cidade, tipo, preço=None):
+opcoes = {}
+def busca(cidade, tipo, preço=None, r=None, d=None, p=None):
+    print(r, d, p)
+    x = 0
+    if r:
+        Hotel.instances.sort(key=lambda h: float(h.recomendacao), reverse=True)
+    if d:
+        Hotel.instances.sort(key=lambda h: float(h.dist_centro), reverse=False)
     for hotel in Hotel.instances:
         if hotel.cidade == cidade:
             quartos = hotel.get_quartos(tipo, preço)
+            quartos.sort(key=lambda q: float(q.preço), reverse=False)
             for quarto in quartos:
-                print(f'{hotel.nome} - R${quarto.preço} - {hotel.recomendacao}')
+                x += 1
+                print(f'[id {x}] {hotel.nome} - R${quarto.preço} - {hotel.recomendacao}')
+                opcoes[x] = quarto
     
-    
-busca('João Pessoa', 'Duplo')
+
+# Realizando a busca.
+resultado = busca(cidade='João Pessoa', tipo='Single', preço=100.0, r=None, d=None, p=True)
+
+# Selecionando quarto para reserva
+id_quarto = int(input('Digite o id do quarto que deseja reservar: '))
+quarto = opcoes[id_quarto]
+
+# Criando a reserva
+reserva1 = Reserva('cliente1', datetime(2020, 5, 17), datetime(2020, 5, 27), quarto)
+
+# Selecionar modo de pagamento
+modos = {1: Boleto, 2: CartaoCredito}
+modo = int(input('1: Boleto\n2: Cartão de crédito\nSelecione o modo de pagamento: '))
+reserva1.modo_pagamento = modos[modo]()
+
+# Realizando pagamento e retornando reserva
+reserva1.realizar_pagamento(quarto.preço)
+print(reserva1)

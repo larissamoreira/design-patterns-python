@@ -1,4 +1,4 @@
-class Tipo:
+class TipoQuarto:
     SINGLE="Single"
     DUPLO="Duplo"
     TRIPLO="Triplo"

@@ -15,16 +15,16 @@ class Hotel:
 
     # Retorna os quartos disponiveis do hotel por tipo, é opcional filtrar pelo preço do quarto.
     def get_quartos(self, tipo, preço=None):
-        r = []
+        result = []
         for quarto in self.quartos:
             if quarto.disponivel:
                 if quarto.tipo == tipo:
                     if preço:
                         if quarto.preço <= preço:
-                            r.append(quarto)
+                            result.append(quarto)
                     else:
-                        r.append(quarto) 
-        return r
+                        result.append(quarto)
+        return result
 
     def __str__(self):
         return f'{self.nome}'
