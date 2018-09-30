@@ -3,6 +3,9 @@ class Quarto:
         self.tipo = tipo
         self.preço = preço
         self.disponivel = True
+
+    def reservar(self):
+        self.disponivel = False
     
     def __str__(self):
-        return f'{self.tipo} - R${self.preço}'
+       return f'{self.tipo} - R${self.preço}'
