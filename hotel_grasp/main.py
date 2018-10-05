@@ -1,43 +1,30 @@
-import cadastros
-from hotel import Hotel
-from reserva import Reserva
-from datetime import datetime
-from boleto import Boleto
-from cartao_credito import CartaoCredito
+from controllers.controller import ControllerHotel
+from models.hotel import Hotel
+from models.quarto import Quarto
+from models.tipo_quarto import TipoQuarto
 
-opcoes = {}
-def busca(cidade, tipo, preço=None, r=None, d=None, p=None):
-    print(r, d, p)
-    x = 0
-    if r:
-        Hotel.instances.sort(key=lambda h: float(h.recomendacao), reverse=True)
-    if d:
-        Hotel.instances.sort(key=lambda h: float(h.dist_centro), reverse=False)
-    for hotel in Hotel.instances:
-        if hotel.cidade == cidade:
-            quartos = hotel.get_quartos(tipo, preço)
-            quartos.sort(key=lambda q: float(q.preço), reverse=False)
-            for quarto in quartos:
-                x += 1
-                print(f'[id {x}] {hotel.nome} - R${quarto.preço} - {hotel.recomendacao}')
-                opcoes[x] = quarto
+if __name__ == '__main__':
     
+    #Cadastros
 
-# Realizando a busca.
-resultado = busca(cidade='João Pessoa', tipo='Single', preço=100.0, r=None, d=None, p=True)
+    hotel1 = Hotel('Hotel Maravilha', 'João Pessoa', 'Epitácio Pessoa, 221', '20', '7.0')
+    hotel1.add_quarto(Quarto(1, TipoQuarto.SINGLE, 98.00, hotel1))
+    hotel1.add_quarto(Quarto(2, TipoQuarto.DUPLO, 70.50, hotel1))
+    hotel1.add_quarto(Quarto(3, TipoQuarto.TRIPLO, 40.50, hotel1))
+    hotel1.add_quarto(Quarto(4, TipoQuarto.PRESIDENCIAL, 160.70, hotel1))
 
-# Selecionando quarto para reserva
-id_quarto = int(input('Digite o id do quarto que deseja reservar: '))
-quarto = opcoes[id_quarto]
+    hotel2 = Hotel('Hotel Caravelas', 'João Pessoa', 'Ranieri Mazilli, 221', '40', '9.6')
+    hotel2.add_quarto(Quarto(5, TipoQuarto.SINGLE, 18.00, hotel2))
+    hotel2.add_quarto(Quarto(6, TipoQuarto.DUPLO, 20.50, hotel2))
+    hotel2.add_quarto(Quarto(7, TipoQuarto.TRIPLO, 30.50, hotel2))
+    hotel2.add_quarto(Quarto(8, TipoQuarto.PRESIDENCIAL, 100.70, hotel2))
 
-# Criando a reserva
-reserva1 = Reserva('cliente1', datetime(2020, 5, 17), datetime(2020, 5, 27), quarto)
-
-# Selecionar modo de pagamento
-modos = {1: Boleto, 2: CartaoCredito}
-modo = int(input('1: Boleto\n2: Cartão de crédito\nSelecione o modo de pagamento: '))
-reserva1.modo_pagamento = modos[modo]()
-
-# Realizando pagamento e retornando reserva
-reserva1.realizar_pagamento(quarto.preço)
-print(reserva1)
+    hotel3 = Hotel('Hotel PAD', 'Campina Grande', 'Avenida Haddad, 43', '10', '10')
+    hotel3.add_quarto(Quarto(9, TipoQuarto.SINGLE, 50.00, hotel3))
+    hotel3.add_quarto(Quarto(10, TipoQuarto.SINGLE, 54.00, hotel3))
+    hotel3.add_quarto(Quarto(11, TipoQuarto.DUPLO, 70.50, hotel3))
+    hotel3.add_quarto(Quarto(12, TipoQuarto.TRIPLO, 80.50, hotel3))
+    hotel3.add_quarto(Quarto(13, TipoQuarto.PRESIDENCIAL, 200.00, hotel3))
+    
+    main = ControllerHotel()
+    main.start()
