@@ -1,9 +1,13 @@
 from observer import Observer
 
-class JornalTempo(Observer):
+class CondicoesAtuais(Observer):
     def update(self, *args, **kwargs):
-        print(f"Jornal Tempo - Mudança no tempo recebida: {args} - {kwargs}")
+        print(f"Mudança nas condições recebida: {args} - {kwargs}")
 
-class NoticiasTempo(Observer):
+class Estatisticas(Observer):
     def update(self, *args, **kwargs):
-        print(f"Notícias Tempo - Mudança no tempo recebida: {args} - {kwargs}")
+        print(f"Mudança nas estatísticas do tempo recebida: {args} - {kwargs}")
+
+class Previsao(Observer):
+    def update(self, *args, **kwargs):
+        print(f"Mudança na previsão do tempo recebida: {args} - {kwargs}")
